@@ -39,6 +39,7 @@ The Team -
 * **Paul Parker**
 * **Ryan Thornley**
 * **Ryan van Noortwijk**
+* **Callum Martin**
 
 ## License
 
