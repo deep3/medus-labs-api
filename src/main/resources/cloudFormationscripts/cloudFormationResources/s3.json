@@ -1,0 +1,22 @@
+{
+  "Description": "Creates a bucket with given name",
+  "Parameters": {
+    "BucketName": {
+      "Description": "Name of bucket to be created",
+      "Type": "String",
+      "AllowedPattern": "^[a-z0-9\\-]*$",
+      "MinLength": "1",
+      "MaxLength": "64"
+    }
+  },
+  "Resources": {
+    "s3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {
+          "Ref": "BucketName"
+        }
+      }
+    }
+  }
+}

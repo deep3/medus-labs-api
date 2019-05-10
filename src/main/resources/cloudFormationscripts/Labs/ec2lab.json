@@ -1,0 +1,82 @@
+{
+  "Description": "Creates an Ec2Lab",
+  "Parameters": {
+    "UserName": {
+      "Description": "Name of user to be created",
+      "Type": "String",
+      "AllowedPattern": "[\\w+=,.@-]+",
+      "MinLength": "1",
+      "MaxLength": "64"
+    },
+    "Password": {
+      "Description": "Password for User",
+      "Type": "String",
+      "NoEcho": "True"
+    },
+    "user": {
+      "Description": "Template S3 URL for User CloudFormation Script",
+      "Type": "String"
+    },
+    "vpc": {
+      "Description": "Template S3 URL for VPC CloudFormation Script",
+      "Type": "String"
+    },
+    "ec2": {
+      "Description": "Template S3 URL for EC2 CloudFormation Script",
+      "Type": "String"
+    },
+    "S3KeyBucket": {
+      "Description": "S3 URL Private Key Location used in IAM Role",
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "User": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "Parameters": {
+          "UserName": {
+            "Ref": "UserName"
+          },
+          "Password": {
+            "Ref": "Password"
+          },
+          "S3KeyBucket": {
+            "Ref": "S3KeyBucket"
+          }
+        },
+        "Tags": [ { "Key": "Name", "Value": "AWS-Labs-User" } ],
+        "TemplateURL": {
+          "Ref": "user"
+        },
+        "TimeoutInMinutes": 5
+      }
+    },
+    "VPC": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "Tags": [ { "Key": "Name", "Value": "AWS-Labs-VPC" } ],
+        "TemplateURL": {
+          "Ref": "vpc"
+        },
+        "TimeoutInMinutes": 5
+      }
+    },
+    "EC2": {
+      "Type": "AWS::CloudFormation::Stack",
+      "DependsOn": "VPC",
+      "Properties": {
+        "Parameters": {
+          "Subnet": {
+            "Fn::GetAtt": [ "VPC", "Outputs.PublicSubnet" ]
+          }
+        },
+        "Tags": [ { "Key": "Name", "Value": "AWS-Labs-EC2" } ],
+        "TemplateURL": {
+          "Ref": "ec2"
+        },
+        "TimeoutInMinutes": 5
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "Description": "Creates a user in the default user group",
+  "Parameters": {
+    "UserName": {
+      "Description": "Name of user to be created",
+      "Type": "String",
+      "AllowedPattern": "[\\w+=,.@-]+",
+      "MinLength": "1",
+      "MaxLength": "64"
+    },
+    "Password": {
+      "Description": "User Password",
+      "Type": "String",
+      "NoEcho": "True"
+    },
+    "S3KeyBucket": {
+      "Description": "Bucket that stores the S3 Keypair",
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "IamGroup": {
+      "Type": "AWS::IAM::Group"
+    },
+    "IamPolicy" : {
+      "Type" : "AWS::IAM::ManagedPolicy",
+      "Properties" : {
+        "Description": "S3 Access Policy: Access so S3 Key pair store",
+        "Path" : "/",
+        "Groups": [
+          {
+            "Ref": "IamGroup"
+          }
+        ],
+        "PolicyDocument" :   {
+          "Version":"2012-10-17",
+          "Statement" : [{
+            "Effect": "Allow",
+            "Action": ["s3:ListBucket", "s3:ListAllMyBuckets" ],
+            "Resource": "arn:aws:s3:::*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": ["s3:ListBucket","s3:GetObject"],
+              "Resource": { "Fn::Join":[ ":",["arn:aws:s3:::*", {"Ref": "S3KeyBucket"}]] },
+              "Condition": {}
+            }]
+        }
+      }
+    },
+    "IamUser": {
+      "Type": "AWS::IAM::User",
+      "Properties": {
+        "Groups": [
+          {
+            "Ref": "IamGroup"
+          }
+        ],
+        "LoginProfile": {
+          "Password": {
+            "Ref": "Password"
+          },
+          "PasswordResetRequired": "false"
+        },
+        "UserName": {
+          "Ref": "UserName"
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "UserArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "IamUser",
+          "Arn"
+        ]
+      }
+    }
+  }
+}

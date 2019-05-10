@@ -1,0 +1,23 @@
+{
+  "Description" : "Launches an EC2 Instance",
+  "Parameters": {
+    "Subnet": {
+      "Description": "Subnet to launch instance into",
+      "Type": "String"
+    }
+  },
+  "Resources" : {
+    "MyEC2Instance" : {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "ImageId" : "ami-b8b45ddf",
+        "InstanceType": "t2.micro",
+        "KeyName" : "Ec2AccessKey",
+        "SubnetId": {
+          "Ref": "Subnet"
+        },
+        "Tags": [ { "Key": "Name", "Value": "AWS-Labs-Instance" } ]
+      }
+    }
+  }
+}

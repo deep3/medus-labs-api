@@ -1,0 +1,13 @@
+version: "3"
+services:
+  api:
+    image: <YOUR_DOCKER_ID>/medus-labs-api
+    ports:
+      - "8080:8080"
+  ui:
+    image: <YOUR_DOCKER_ID>/medus-labs-ui
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+

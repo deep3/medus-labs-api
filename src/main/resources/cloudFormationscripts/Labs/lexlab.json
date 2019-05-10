@@ -1,0 +1,127 @@
+{
+  "Description": "Creates a LexLab ",
+  "Metadata": {
+    "SupportedRegions": [
+      "us-west-2",
+      "eu-west-1"
+    ]
+  },
+  "Parameters": {
+    "UserName": {
+      "Description": "Name of user to be created",
+      "Type": "String",
+      "AllowedPattern": "[\\w+=,.@-]+",
+      "MinLength": "1",
+      "MaxLength": "64"
+    },
+    "Password": {
+      "Description": "Password for User",
+      "Type": "String",
+      "NoEcho": "True"
+    },
+    "user": {
+      "Description": "Template S3 URL for User CloudFormation Script",
+      "Type": "String"
+    },
+    "vpc": {
+      "Description": "Template S3 URL for VPC CloudFormation Script",
+      "Type": "String"
+    },
+    "cloud9": {
+      "Description": "Template S3 URL for Cloud9 CloudFormation Script",
+      "Type": "String"
+    },
+    "S3KeyBucket": {
+      "Description": "S3 URL Private Key Location used in IAM Role",
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "User": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "Parameters": {
+          "UserName": {
+            "Ref": "UserName"
+          },
+          "Password": {
+            "Ref": "Password"
+          },
+          "S3KeyBucket": {
+            "Ref": "S3KeyBucket"
+          }
+        },
+        "Tags": [ { "Key": "Name", "Value": "AWS-Labs-User" } ],
+        "TemplateURL": {
+          "Ref": "user"
+        },
+        "TimeoutInMinutes": 5
+      }
+    },
+    "VPC": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AWS-Labs-VPC"
+          }
+        ],
+        "TemplateURL": {
+          "Ref": "vpc"
+        },
+        "TimeoutInMinutes": 5
+      }
+    },
+    "Cloud9": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "Parameters": {
+          "Subnet": {
+            "Fn::GetAtt": [
+              "VPC",
+              "Outputs.PublicSubnet"
+            ]
+          },
+          "UserArn": {
+            "Fn::GetAtt": [
+              "User",
+              "Outputs.UserArn"
+            ]
+          },
+          "UserName": {
+            "Ref": "UserName"
+          }
+        },
+        "TemplateURL": {
+          "Ref": "cloud9"
+        }
+      }
+    },
+    "IamGroup": {
+      "Type": "AWS::IAM::Group",
+      "Properties": {
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonLexFullAccess"
+        ]
+      }
+    },
+    "AddUserToGroup": {
+      "Type": "AWS::IAM::UserToGroupAddition",
+      "DependsOn": [
+        "User",
+        "IamGroup"
+      ],
+      "Properties": {
+        "GroupName": {
+          "Ref": "IamGroup"
+        },
+        "Users": [
+          {
+            "Ref": "UserName"
+          }
+        ]
+      }
+    }
+  }
+}

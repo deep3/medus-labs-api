@@ -1,0 +1,72 @@
+{
+  "Description": "Testing lab includes a user and some permissions, intended for quick testing of lab deployment",
+  "Parameters": {
+    "UserName": {
+      "Description": "Name of user to be created",
+      "Type": "String",
+      "AllowedPattern": "[\\w+=,.@-]+",
+      "MinLength": "1",
+      "MaxLength": "64"
+    },
+    "Password": {
+      "Description": "Password for User",
+      "Type": "String",
+      "NoEcho": "True"
+    },
+    "user": {
+      "Description": "Template S3 URL for User CloudFormation Script",
+      "Type": "String"
+    },
+    "lambda": {
+      "Description": "Template S3 URL for Lambda CloudFormation Script",
+      "Type": "String"
+    },
+    "S3KeyBucket": {
+      "Description": "S3 URL Private Key Location used in IAM Role",
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "User": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "Parameters": {
+          "UserName": {
+            "Ref": "UserName"
+          },
+          "Password": {
+            "Ref": "Password"
+          },
+          "S3KeyBucket": {
+            "Ref": "S3KeyBucket"
+          }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AWS-Labs-User"
+          }
+        ],
+        "TemplateURL": {
+          "Ref": "user"
+        },
+        "TimeoutInMinutes": 5
+      }
+    },
+    "Lambda": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AWS-Labs-Lambda"
+          }
+        ],
+        "TemplateURL": {
+          "Ref": "lambda"
+        },
+        "TimeoutInMinutes": 2
+      }
+    }
+  }
+}
