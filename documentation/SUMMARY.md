@@ -1,7 +1,7 @@
-# Cirrus Formation API Summary
+# Medus Labs API Summary
 ## Motivation 
 
-The Cirrus Formation tool is designed for any kind of teaching environment where you have a group of students and a requirement for each of them to have an isolated, restricted (optional) AWS account.
+The Medus Labs tool is designed for any kind of teaching environment where you have a group of students and a requirement for each of them to have an isolated, restricted (optional) AWS account.
 
 This could be achieved two ways just using basic AWS functionality.
 
@@ -19,7 +19,7 @@ The AWS Labs tool sets out to solve these problems on your behalf making a quick
 
 ## Architecture
 
-The Cirrus Formation software is made up of two components.
+The Medus Labs software is made up of two components.
 
 * Java REST API - Used to communicate with the AWS API's and provides a REST API for controlling deployments
 * Angular 6 UI - A Javascript/Typescript front end that provides a simple UI for the REST API
@@ -36,7 +36,7 @@ AWS labs creates and manages multiple sub accounts called member organizations f
 
 This allows the root account to be responsible for centralised billing and administration. Deploying AWS Labs into the root account allows it to administrate all of the member accounts on your behalf.
 
-![Cirrus Formation Account Architecture](images/account-architecture.png)
+![Medus Labs Account Architecture](images/account-architecture.png)
 
-The Cirrus Formation setup process will guide you through setting up the member accounts, deploying to them and then cleaning up as part of an un-deployment process.
+The Medus Labs setup process will guide you through setting up the member accounts, deploying to them and then cleaning up as part of an un-deployment process.
 
