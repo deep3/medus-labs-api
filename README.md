@@ -10,8 +10,7 @@ This application was developed for teaching or lab usage and can quickly setup a
     * [Summary](documentation/SUMMARY.md)
     * [Example Use Case](documentation/USECASE.md)
 * Using the System
-    * [Deployment](documentation/DEPLOYMENT.md)
-    * [User Guide](documentation/USERGUIDE.md)
+    * [User GUIDE]
 * Development
     * [Building Locally](documentation/BUILDING.md)
   
