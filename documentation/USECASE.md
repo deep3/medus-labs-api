@@ -4,9 +4,9 @@ A teacher needs to teach a class of 5 students, teaching them about EC2 and S3. 
 
 ### Installation
 
-The teacher will create a new AWS account and deploy the Cirrus Formation AMI as an EC2 instance in their account. They will attach an IAM role of administrator to the instance so it can manage the member organisations on their behalf
+The teacher will create a new AWS account and deploy the Medus Labs AMI as an EC2 instance in their account. They will attach an IAM role of administrator to the instance so it can manage the member organisations on their behalf
 
-Following the setup process of the Cirrus Formation too the teacher creates 5 new member organisations.
+Following the setup process of the Medus Labs too the teacher creates 5 new member organisations.
 
 ### Before the class - Deployment 
 
