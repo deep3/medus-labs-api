@@ -15,7 +15,7 @@ Deploying the labs is relatively easy, you can create a cloud-formation script t
 
 Un-deploying is a more complex challenge, you can remove the cloud-formation script with a single API call but this will not necessarily remove all the assets the student may have created, you could be left with EC2 instances running in each account and be totally unaware of their existence. In an ideal world you would be able to delete a memeber account and then create a new one in its place however AWS make it __incredibly__ difficult to delete member organisations.
 
-The AWS Labs tool sets out to solve these problems on your behalf making a quick and easy through a simple web interface
+The Medus Labs tool sets out to solve these problems on your behalf making a quick and easy through a simple web interface
 
 ## Architecture
 
@@ -32,9 +32,9 @@ Our AMI has docker installed with 2 docker containers running the API and UI res
 
 ### AWS Architecture
 
-AWS labs creates and manages multiple sub accounts called member organizations from one master root account using [AWS Organizations](https://aws.amazon.com/organizations/).
+Medus Labs creates and manages multiple sub accounts called member organizations from one master root account using [AWS Organizations](https://aws.amazon.com/organizations/).
 
-This allows the root account to be responsible for centralised billing and administration. Deploying AWS Labs into the root account allows it to administrate all of the member accounts on your behalf.
+This allows the root account to be responsible for centralised billing and administration. Deploying Medus Labs into the root account allows it to administrate all of the member accounts on your behalf.
 
 ![Medus Labs Account Architecture](images/account-architecture.png)
 
